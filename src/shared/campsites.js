@@ -9,7 +9,7 @@ export const CAMPSITES = [
             {
                 id: 0,
                 rating: 5, 
-                text: "What a magnificent view!",
+                text: "React Lake Campground Comments",
                 author: "Tinus Lorvaldes",
                 date: "2018-10-25T16:30Z"
             },
@@ -53,7 +53,7 @@ export const CAMPSITES = [
             {
                 id: 0,
                 rating: 5, 
-                text: "What a magnificent view!",
+                text: "Chrome River Campground Comments",
                 author: "Tinus Lorvaldes",
                 date: "2018-10-25T16:30Z"
             },
@@ -97,7 +97,7 @@ export const CAMPSITES = [
             {
                 id: 0,
                 rating: 5, 
-                text: "What a magnificent view!",
+                text: "Breadcrumb Trail Campground Comments",
                 author: "Tinus Lorvaldes",
                 date: "2018-10-25T16:30Z"
             },
@@ -133,7 +133,7 @@ export const CAMPSITES = [
     },
     {
         id: 3,
-        name:'Redux Woods Campground',
+        name:'Redux Wood Campground',
         image: 'assets/images/redux-woods.jpg',
         elevation: 42,
         description: "You'll never want to leave this hidden gem, deep within the lush Redux Woods.",
@@ -141,7 +141,7 @@ export const CAMPSITES = [
             {
                 id: 0,
                 rating: 5, 
-                text: "What a magnificent view!",
+                text: "Redux Comments",
                 author: "Tinus Lorvaldes",
                 date: "2018-10-25T16:30Z"
             },
