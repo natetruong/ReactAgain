@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 class CampsiteInfo extends Component {
-    constructor(props) {
-        super(props);
-        
-    };
+   
 
     renderCampsite(campsite) {
         return(
@@ -53,12 +50,13 @@ class CampsiteInfo extends Component {
         if(this.props.campsite) {
             return (
                 // <div className="container"> we usually need this but in this case you dont because it will mess with the layout.  
-                <div className="row">
-                    {this.renderCampsite(this.props.campsite)}
-                    {this.renderComments(this.props.campsite.comments)}
+                <div className="container">
+                        <div className="row">
+                        {this.renderCampsite(this.props.campsite)}
+                        {this.renderComments(this.props.campsite.comments)}
                     
+                    </div>
                 </div>
-                
             );
         } else return <div/>
     }
