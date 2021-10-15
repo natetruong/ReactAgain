@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
-class CampsiteInfo extends Component {
-   
 
-    renderCampsite(campsite) {
+   
+//SEE RenderComments FUNCTION FOR NOTES.
+    function RenderCampsite({campsite}) {
         return(
             <div className="col-md-5 m-1">
                <Card>
@@ -17,8 +17,8 @@ class CampsiteInfo extends Component {
             </div>
         );
     }
-
-    renderComments(comments) {
+// the comments parameter for RenderComments is not the same as the props from main.  it is actually from the custom attribute from the Contaner component CampsiteInfo below.
+    function RenderComments({comments}) {
         if(comments) {
             return (
                 <div className="col-md-5 m-1">
@@ -43,23 +43,23 @@ class CampsiteInfo extends Component {
 
    
 
-    render(){
+    function CampsiteInfo(props) {
 
        
 
-        if(this.props.campsite) {
+        if(props.campsite) {
             return (
                 // <div className="container"> we usually need this but in this case you dont because it will mess with the layout.  
                 <div className="container">
                         <div className="row">
-                        {this.renderCampsite(this.props.campsite)}
-                        {this.renderComments(this.props.campsite.comments)}
+                        <RenderCampsite campsite = {props.campsite} />
+                        <RenderComments comments = {props.campsite.comments} />
                     
                     </div>
                 </div>
             );
         } else return <div/>
     }
-}
+
 
 export default CampsiteInfo;
