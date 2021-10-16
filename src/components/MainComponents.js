@@ -44,8 +44,9 @@ class Main extends Component {
     // }  //this method was cut from Directory component
 
     render() {
-
-        const HomePage = () => {
+//arrow fxn is used because of the this. keyword.  it will be undefined if we dont use arrow fxn for the const HomePage.
+ //.featured is the key to choose which component to display.  check out campsite.js to see which object has feature set to true.  that will be the displayed object.  
+const HomePage = () => {
             return (
                 <Home
                 campsite={this.state.campsites.filter(campsite => campsite.featured)[0]}
@@ -55,6 +56,16 @@ class Main extends Component {
             );
         };
 
+
+const CampsiteWithId = ({match}) => {
+            return (
+                <CampsiteInfo 
+                    campsite={this.state.campsites.filter(campsite => campsite.id === +match.params.campsiteId)[0]}
+                    comments={this.state.comments.filter(comment => comment.campsiteId === +match.params.campsiteId)}
+                />
+            );
+};
+//if you need to pass state data as a props to a component then us render syntax as in line63 otherwise we can use component={componentName} syntax
         return (
             <div>
                 <Header />
@@ -62,6 +73,7 @@ class Main extends Component {
                     <Route path='/home' component={HomePage} />
                     <Route exact path='/directory' render={() => <Directory campsites={this.state.campsites} />} />
                     <Route exact path='/contactus' component={Contact} />
+                    <Route path='/directory/:campsiteId' component={CampsiteWithId} />
                     <Redirect to='/home' />
                 </Switch>
                 <Footer />
