@@ -23,8 +23,27 @@ class Contact extends Component  {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+//we can use arrow fxn to skip the this.methodNamed.bind(metho).
+//see example below
 
-    handleInputChange(event) {
+// handleInputChange = (event) => {
+//     const target = event.target;
+//     const name = target.name;
+//     const value = target.type === 'checkbox' ? target.checked : target.value;
+
+//     this.setState({
+//         [name]: value
+//     });
+// }
+
+//event.target is a built in java script property that goes with the onChange event handler.
+//it is guiding the const target to the event element that it was orinated from which in this case is whatever the onChange element is from.
+    
+
+//handling changes in form elements.
+// target.name is the equivalent to event.target.name???
+// 
+handleInputChange(event) {
         const target = event.target;
         const name = target.name;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -33,6 +52,7 @@ class Contact extends Component  {
             [name]: value
         });
     }
+// handling changes in form submission.  event.preventDefault is to prevent the entire page being refresh when submit button is clicked.  it is usually automatically refresh the entire page when submit is click.  we do not want that.
 
     handleSubmit(event) {
         console.log('Current state is: ' + JSON.stringify(this.state));
@@ -41,8 +61,18 @@ class Contact extends Component  {
     }
 
     //end of controlled form set up//
+//form section below this line.
 
+    //<Col md ={10} is equivalent to className ="col-md-10". <--- reactstrap col component.
+    //  it is the concept in Label component.  md ={2} === col-md-2
+    //md ={{size: 4, offset:2}} === className="col-md-4 offset-md-2"
+    //remember form input set up has the usual attributes: type, id, name and placeholder.
+///CONTROLLED FORM SET UP?
+//we need to set the value to the state so that the state holds the value of the form.  
+//value ={this.state.whatever_property_name_that_we_wrote_in_the_state}
+//exception is checkbox.  we dont use value attribute but checked attribute instead.
 
+//WE WILL SET THE ENTIRE FORM TO a built in EVENT HANDLER CALL onSubmit which set to {this.handleSubmit} method.
     render() {
     return (
         <div className="container">
@@ -73,6 +103,8 @@ class Contact extends Component  {
                                 <h2>Send us your Feedback</h2>
                                 <hr />
                             </div>
+
+
                             <div className="col-md-10">
                                 <Form onSubmit={this.handleSubmit}>
                                     <FormGroup row>
