@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem,
-    Button, Form, FormGroup, Label, Input, Col, FormFeedback } from 'reactstrap';
+    Button, Label, Col, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Control, LocalForm } from 'react-redux-form';
 
 class Contact extends Component  {
     
@@ -37,39 +38,39 @@ constructor(props) {
             }
         };
 
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        // this.handleInputChange = this.handleInputChange.bind(this);
+        // this.handleSubmit = this.handleSubmit.bind(this);
     }
     
-    handleBlur =(field) =>() => {
-        this.setState ({
-            touched: {...this.state.touched, [field]: true}
-        });    
-    }
+    // handleBlur =(field) =>() => {
+    //     this.setState ({
+    //         touched: {...this.state.touched, [field]: true}
+    //     });    
+    // }
 
-    validate(firstName, lastName, phoneNum, email) {
-        const errors = {
-            firstName: '',
-            lastName:'',
-            phoneNum:'',
-            email:''
-        };
+    // validate(firstName, lastName, phoneNum, email) {
+    //     const errors = {
+    //         firstName: '',
+    //         lastName:'',
+    //         phoneNum:'',
+    //         email:''
+    //     };
 
-        if(this.state.touched.firstName) {
-            if(firstName.length <2) {
-                errors.firstName ='First name must be at least 2 characters';
-            } else if(firstName.length >15) {
-                errors.firstName =' First Name must not be more than 15 characters';
-            }
-        }
+    //     if(this.state.touched.firstName) {
+    //         if(firstName.length <2) {
+    //             errors.firstName ='First name must be at least 2 characters';
+    //         } else if(firstName.length >15) {
+    //             errors.firstName =' First Name must not be more than 15 characters';
+    //         }
+    //     }
 
-        if(this.state.touched.lastName) {
-            if(lastName.length <2) {
-                errors.lastName ='Last name must be at least 2 characters';
-            } else if(lastName.length >15) {
-                errors.lastName =' Last Name must not be more than 15 characters';
-            }
-        }
+    //     if(this.state.touched.lastName) {
+    //         if(lastName.length <2) {
+    //             errors.lastName ='Last name must be at least 2 characters';
+    //         } else if(lastName.length >15) {
+    //             errors.lastName =' Last Name must not be more than 15 characters';
+    //         }
+    //     }
 //will my code work?
         // const reg = {
         //     phoneNum:'',
@@ -82,18 +83,18 @@ constructor(props) {
         //     }
         // }
 
-        const reg = /^\d+$/;
-        if(this.state.touched.phoneNum && !reg.test(phoneNum)) {
-            errors.phoneNum=' The phone number should contain only numbers';
-        }
+    //     const reg = /^\d+$/;
+    //     if(this.state.touched.phoneNum && !reg.test(phoneNum)) {
+    //         errors.phoneNum=' The phone number should contain only numbers';
+    //     }
 
-        if(this.state.touched.email && !email.includes('@')) {
-            errors.email='Email should contain a @';
-        }
+    //     if(this.state.touched.email && !email.includes('@')) {
+    //         errors.email='Email should contain a @';
+    //     }
 
-        return errors;
+    //     return errors;
 
-    }
+    // }
 //we are not changing the touched object so we use setState and we do not want to changed the entire object touched.  we are
 //spreading it out using spread syntax.  ...this.state.touched will spread the touched object out.  then we will update
 //whatever property that trigger this event.  [field]:true.  whatever passed into handleBlur method whether it was firstName, lastName...
@@ -120,22 +121,27 @@ constructor(props) {
 //handling changes in form elements.
 // target.name is the equivalent to event.target.name???
 // 
-handleInputChange(event) {
-        const target = event.target;
-        const name = target.name;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+// handleInputChange(event) {
+//         const target = event.target;
+//         const name = target.name;
+//         const value = target.type === 'checkbox' ? target.checked : target.value;
     
-        this.setState({
-            [name]: value
-        });
-    }
+//         this.setState({
+//             [name]: value
+//         });
+//     }
 // handling changes in form submission.  event.preventDefault is to prevent the entire page being refresh when submit button is clicked.  it is usually automatically refresh the entire page when submit is click.  we do not want that.
 
-    handleSubmit(event) {
-        console.log('Current state is: ' + JSON.stringify(this.state));
-        alert('Current state is: ' + JSON.stringify(this.state));
-        event.preventDefault();
-    }
+handleSubmit(values) {
+    console.log("Current state is: " + JSON.stringify(values));
+    alert("Current state is: " + JSON.stringify(values));
+}   
+
+// handleSubmit(event) {
+    //     console.log('Current state is: ' + JSON.stringify(this.state));
+    //     alert('Current state is: ' + JSON.stringify(this.state));
+    //     event.preventDefault();
+    // }
 
     //end of controlled form set up//
 //form section below this line.
@@ -152,7 +158,7 @@ handleInputChange(event) {
 //WE WILL SET THE ENTIRE FORM TO a built in EVENT HANDLER CALL onSubmit which set to {this.handleSubmit} method.
     render() {
 
-        const errors =this.validate(this.state.firstName, this.state.lastName, this.state.phoneNum, this.state.email);
+        // const errors =this.validate(this.state.firstName, this.state.lastName, this.state.phoneNum, this.state.email);
     return (
         <div className="container">
             <div className="row">
@@ -185,7 +191,84 @@ handleInputChange(event) {
 
 
                             <div className="col-md-10">
-                                <Form onSubmit={this.handleSubmit}>
+                            <LocalForm onSubmit={values => this.handleSubmit(values)}>
+                            <Row className="form-group">
+                                <Label htmlFor="firstName" md={2}>First Name</Label>
+                                <Col md={10}>
+                                    <Control.text model=".firstName" id="firstName" name="firstName"
+                                        placeholder="First Name"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="lastName" md={2}>Last Name</Label>
+                                <Col md={10}>
+                                    <Control.text model=".lastName" id="lastName" name="lastName"
+                                        placeholder="Last Name"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="phoneNum" md={2}>Phone</Label>
+                                <Col md={10}>
+                                    <Control.text model=".phoneNum" id="phoneNum" name="phoneNum"
+                                        placeholder="Phone number"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="email" md={2}>Email</Label>
+                                <Col md={10}>
+                                    <Control.text model=".email" id="email" name="email"
+                                        placeholder="Email"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Col md={{size: 4, offset: 2}}>
+                                    <div className="form-check">
+                                        <Label check>
+                                            <Control.checkbox
+                                                model=".agree"
+                                                name="agree"
+                                                className="form-check-input"
+                                            /> {' '}
+                                            <strong>May we contact you?</strong>
+                                        </Label>
+                                    </div>
+                                </Col>
+                                <Col md={4}>
+                                    <Control.select model=".contactType" name="contactType"
+                                        className="form-control">
+                                        <option>By Phone</option>
+                                        <option>By Email</option>
+                                    </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="feedback" md={2}>Your Feedback</Label>
+                                <Col md={10}>
+                                    <Control.textarea model=".feedback" id="feedback" name="feedback"
+                                        rows="12"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Col md={{size: 10, offset: 2}}>
+                                    <Button type="submit" color="primary">
+                                        Send Feedback
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </LocalForm>
+                                
+                                
+                                {/* <Form onSubmit={this.handleSubmit}>
                                     <FormGroup row>
                                         <Label htmlFor="firstName" md={2}>First Name</Label>
                                         <Col md={10}>
@@ -271,7 +354,7 @@ handleInputChange(event) {
                                             </Button>
                                         </Col>
                                     </FormGroup>
-                                </Form>
+                                </Form> */}
                             </div>
                         </div>
                     </div>
