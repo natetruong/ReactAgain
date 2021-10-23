@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem,
-    Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
+    Button, Form, FormGroup, Label, Input, Col, FormFeedback } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 class Contact extends Component  {
     
     //controlled form set up//
+//FormFeedback component show us the errors message of the user.  we need to know if the form input has been entered or not aka "touched"
 
-    constructor(props) {
+//touched is set up as a nested object inside the state please see below.
+//touched: nested object with properties that keep track of the input field to see if the user has entered the input field as in click their house inside the field.  not the same as writing in the input field.
+//why do we need this touched property?  to determine if we need to run validation on that  field.  if it has not been touched then we are not going to run validation.
+//we are going to place a built in event handler called onBlur.  it will fire when user enters an input field then leaves it.  we are going to tie this to a method that will be written below.
+
+//onBlur ={this.handleBlur("firstName")} this event handler will point the event in the input field named: firstName to handleBlur method.
+// ???? "firstName" is an id? that we tie to the onBlur event handler? 
+//??? i think fristName is here is target.name which we ties it the handleInputChange().
+
+
+constructor(props) {
         super(props);
 
         this.state = {
@@ -17,13 +28,79 @@ class Contact extends Component  {
             email: '',
             agree: false,
             contactType: 'By Phone',
-            feedback: ''
+            feedback: '',
+            touched: {
+                firstName: false,
+                lastName: false,
+                phoneNum: false,
+                email: false
+            }
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-//we can use arrow fxn to skip the this.methodNamed.bind(metho).
+    
+    handleBlur =(field) =>() => {
+        this.setState ({
+            touched: {...this.state.touched, [field]: true}
+        });    
+    }
+
+    validate(firstName, lastName, phoneNum, email) {
+        const errors = {
+            firstName: '',
+            lastName:'',
+            phoneNum:'',
+            email:''
+        };
+
+        if(this.state.touched.firstName) {
+            if(firstName.length <2) {
+                errors.firstName ='First name must be at least 2 characters';
+            } else if(firstName.length >15) {
+                errors.firstName =' First Name must not be more than 15 characters';
+            }
+        }
+
+        if(this.state.touched.lastName) {
+            if(lastName.length <2) {
+                errors.lastName ='Last name must be at least 2 characters';
+            } else if(lastName.length >15) {
+                errors.lastName =' Last Name must not be more than 15 characters';
+            }
+        }
+//will my code work?
+        // const reg = {
+        //     phoneNum:'',
+        //     email:''
+        // };
+
+        // if(this.state.touched.phoneNum) {
+        //     if(!phoneNumber === /^\d+$/) {
+        //         errors.phoneNum ='The phone number should contain only numbers'
+        //     }
+        // }
+
+        const reg = /^\d+$/;
+        if(this.state.touched.phoneNum && !reg.test(phoneNum)) {
+            errors.phoneNum=' The phone number should contain only numbers';
+        }
+
+        if(this.state.touched.email && !email.includes('@')) {
+            errors.email='Email should contain a @';
+        }
+
+        return errors;
+
+    }
+//we are not changing the touched object so we use setState and we do not want to changed the entire object touched.  we are
+//spreading it out using spread syntax.  ...this.state.touched will spread the touched object out.  then we will update
+//whatever property that trigger this event.  [field]:true.  whatever passed into handleBlur method whether it was firstName, lastName...
+
+//handleBlue method above is written in arrow fxn syntax so we do not to bike it to the state via .bind.
+
+    //we can use arrow fxn to skip the this.methodNamed.bind(metho).
 //see example below
 
 // handleInputChange = (event) => {
@@ -74,6 +151,8 @@ handleInputChange(event) {
 
 //WE WILL SET THE ENTIRE FORM TO a built in EVENT HANDLER CALL onSubmit which set to {this.handleSubmit} method.
     render() {
+
+        const errors =this.validate(this.state.firstName, this.state.lastName, this.state.phoneNum, this.state.email);
     return (
         <div className="container">
             <div className="row">
@@ -113,7 +192,10 @@ handleInputChange(event) {
                                             <Input type="text" id="firstName" name="firstName"
                                             placeholder="First Name"
                                             value={this.state.firstName}
-                                            onChange={this.handleInputChange} />
+                                            onChange={this.handleInputChange}
+                                            onBlur ={this.handleBlur("firstName")} 
+                                            invalid = {errors.firstName}/>
+                                            <FormFeedback> {errors.firstName}</FormFeedback>
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
@@ -122,7 +204,10 @@ handleInputChange(event) {
                                             <Input type="text" id="lastName" name="lastName"
                                             placeholder="Last Name"
                                             value={this.state.lastName}
-                                            onChange={this.handleInputChange} />
+                                            onChange={this.handleInputChange} 
+                                            onBlur ={this.handleBlur("lastName")}
+                                            invalid = {errors.lastName}/>
+                                            <FormFeedback> {errors.lastName}</FormFeedback>
                                         </Col>                        
                                     </FormGroup>
                                     <FormGroup row>
@@ -131,7 +216,10 @@ handleInputChange(event) {
                                             <Input type="tel" id="phoneNum" name="phoneNum"
                                             placeholder="Phone number"
                                             value={this.state.phoneNum}
-                                            onChange={this.handleInputChange} />
+                                            onChange={this.handleInputChange}
+                                            onBlur ={this.handleBlur("phoneNum")} 
+                                            invalid = {errors.phoneNum}/>
+                                            <FormFeedback> {errors.phoneNum}</FormFeedback>
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
@@ -140,7 +228,10 @@ handleInputChange(event) {
                                             <Input type="email" id="email" name="email"
                                             placeholder="Email"
                                             value={this.state.email}
-                                            onChange={this.handleInputChange} />
+                                            onChange={this.handleInputChange} 
+                                            onBlur ={this.handleBlur("femail")}
+                                            invalid = {errors.email}/>
+                                            <FormFeedback> {errors.email}</FormFeedback>
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
